@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
+
 public class PlayerController : MonoBehaviour
 {
 	public KeyCode upKey; 
@@ -17,15 +19,21 @@ public class PlayerController : MonoBehaviour
 	public Vector2 jump;
 
 	public bool isGrounded;
-	//public float jumpForce = 2;
+	public float jumpForce = 10;
 
 	
 	// Use this for initialization
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody2D>();
-		jump = new Vector2(0, 2);
+		jump = new Vector2(0, 7);
 	}
+	
+	void OnCollisionStay2D()
+             {
+                 isGrounded = true;
+             }
+         
 	
 	// Update is called once per frame
 	void Update () {
@@ -59,10 +67,10 @@ public class PlayerController : MonoBehaviour
 			newForce.x += forceAmount;
 		}
 
-		if (Input.GetKey(KeyCode.Space)&& isGrounded)
+		if (Input.GetKeyDown(KeyCode.Space)&& isGrounded)
 		{
-			Debug.Log("Pressed Space");
-			rb.AddForce(jump * forceAmount);
+			//Debug.Log("Pressed Space");
+			rb.AddForce(jump * jumpForce);
 			isGrounded = false;
 		}
 
